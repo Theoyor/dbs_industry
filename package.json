@@ -1,0 +1,19 @@
+{
+  "name": "dbs_industry",
+  "version": "1.0.0",
+  "description": "COUNTRY(\r     id: VARCHAR(255), <br>\r     name: VARCHAR(255), <br>\r     income_group: VARCHAR(255) <br>\r     percentage_snapshot_agriculture: NUMERIC, <br>\r     percentage_snapshot_industry: NUMERIC, <br>\r     percentage_snapshot_service: NUMERIC\r     )",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Theoyor/dbs_industry.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Theoyor/dbs_industry/issues"
+  },
+  "homepage": "https://github.com/Theoyor/dbs_industry#readme"
+}

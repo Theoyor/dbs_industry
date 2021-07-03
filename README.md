@@ -3,23 +3,23 @@
 ## Relationen:
 
 COUNTRY(
-    ID: STR(3), <br>
-    NAME: STR(50), <br>
-    INCOME_GROUP: STR(20)
-    PERCENTAGE_SNAPSHOT_AGRICULTURE: FLOAT, <br>
-    PERCENTAGE_SNAPSHOT_INDUSTRY: FLOAT, <br>
-    PERCENTAGE_SNAPSHOT_SERVICE: FLOAT
+    id: VARCHAR(255), <br>
+    name: VARCHAR(255), <br>
+    income_group: VARCHAR(255) <br>
+    percentage_snapshot_agriculture: NUMERIC, <br>
+    percentage_snapshot_industry: NUMERIC, <br>
+    percentage_snapshot_service: NUMERIC
     )
 
 YEAR(
-    DATE: INT, IS_SNAPSHOT: BOOLEAN
+    date: INT, is_snapshot: BOOLEAN
 )
 
 COUNTRY_IN_YEAR(
-    CID: STR(3), <br>
-    YEAR: INT, <br>
-    INDUSTRY_SHARE: FLOAT, <br>
-    GDP: FLOAT, <br>
-    POPULATION: INT, <br>
-    EMISSION: FLOAT
+    country_id: VARCHAR(255), <br>
+    year: INT, <br>
+    industry_share: NUMERIC, <br>
+    gdp: NUMERIC, <br>
+    population: INT, <br>
+    emission: NUMERIC
 )
