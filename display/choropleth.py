@@ -5,10 +5,11 @@ import pandas as pd
 import plotly.graph_objs as go
 import numpy as np
 from datetime import datetime, timedelta
+import psycopg2
 
 
 def prepare_daily_report():
-
+    
     current_date = (datetime.today() - timedelta(days=1)).strftime('%m-%d-%Y')
 
     df = pd.read_csv('./data/test.csv')
@@ -53,26 +54,28 @@ app.layout = html.Div([html.Div([html.H1("COVID19 Impact by Country")],
     dash.dependencies.Output("my-graph", "figure"),
     [dash.dependencies.Input("value-selected", "value")]
 )
+
 def update_figure(selected):
-    #dff = prepare_confirmed_data()
+    # dff = prepare_confirmed_data()
 
     dff = prepare_daily_report()
     dff['hover_text'] = dff["Country_Region"] + ": " + dff[selected].apply(str)
 
-    trace = go.Choropleth(locations=dff['CODE'],z=np.log(dff[selected]),
+    trace = go.Choropleth(locations=dff['CODE'],
+                    	  z=np.log(dff[selected]),
                           text=dff['hover_text'],
                           hoverinfo="text",
                           marker_line_color='white',
                           autocolorscale=False,
                           reversescale=True,
-                          colorscale="RdBu",marker={'line': {'color': 'rgb(180,180,180)','width': 0.5}},
+                          colorscale="RdBu",
+                          marker={'line': {'color': 'rgb(180,180,180)','width': 0.5}},
                           colorbar={"thickness": 10,"len": 0.3,"x": 0.9,"y": 0.7,
                                     'title': {"text": 'persons', "side": "bottom"},
                                     'tickvals': [ 2, 10],
                                     'ticktext': ['100', '100,000']})   
     return {"data": [trace],
-            "layout": go.Layout(height=800,geo={'showframe': False,'showcoastlines': False,
-                                                                      'projection': {'type': "miller"}})}
+            "layout": go.Layout(height=800,geo={'showframe': False,'showcoastlines': False,'projection': {'type': "miller"}})}
 
 if __name__ == '__main__':
     app.run_server(debug=True)
