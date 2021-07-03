@@ -73,4 +73,3 @@ def select(attributes, table, where = ""):
             conn.close()
             return df
 
-print(select(["country_id", "name", "income_group"], ["country"]))
