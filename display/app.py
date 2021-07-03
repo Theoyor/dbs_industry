@@ -13,6 +13,12 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
+colors = {
+    'background': '#b9b9b9',
+    'text': '#592f6a'
+}
+
+
 # assume you have a "long-form" data frame
 # see https://plotly.com/python/px-arguments/ for more options
 df = pd.DataFrame({
@@ -23,8 +29,14 @@ df = pd.DataFrame({
 
 fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
 
+fig.update_layout(
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text']
+)
+
 app.layout = html.Div(children=[
-    html.H1(children='Hello Dash'),
+    html.H1(children='Hello Theo', style={'textAlign': 'center', 'color': '#7FDBFF'}),
 
     html.Div(children='''
         Dash: A web application framework for Python.

@@ -5,16 +5,14 @@ from config import config
 from read_csv import *
 
 def if_exists(d,key1,key2, frac = False):
-    frac = False
-    if key1 in d and not frac:
+
+    if key1 in d:
         if key2 in d[key1]:
             return d[key1][key2]
-        
-    elif key1 in d and frac:
-        if key2 in d[key1]:
-            if not math.isnan( d[key1][key2]): 
-                return decimal.Decimal(d[key1][key2])
+
     return None
+
+
 
 def create_tables():
     

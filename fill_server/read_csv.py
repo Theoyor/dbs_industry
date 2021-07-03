@@ -92,8 +92,8 @@ def read_emission(countries):
             ret[row[0]] = {}
         ret[row[0]][row[1]] = row[2]
 #        print(row)
-#        print(ret[row[0]])
-    return values
+#    print(ret)
+    return ret
 
 
 def read_gdp(countries):
