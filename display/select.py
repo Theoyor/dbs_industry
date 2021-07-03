@@ -2,6 +2,8 @@ from pandas.core.frame import DataFrame
 import psycopg2
 import pandas
 import decimal
+import config 
+
 
 def select(attributes, table, where = ""):
     conn = None
@@ -9,12 +11,10 @@ def select(attributes, table, where = ""):
 
         # read connection parameters
 
-        conn = psycopg2.connect(
-        host="localhost",
-        database="emissions",
-        user="postgres",
-        password="8DMoAc0dRouZ3CX1ZrFy")
-		
+        params = config.config()
+                # connect to the PostgreSQL server
+        print('Connecting to the PostgreSQL database...')
+        conn = psycopg2.connect(**params)
         # create a cursor
         cur = conn.cursor()
 
@@ -71,6 +71,6 @@ def select(attributes, table, where = ""):
     finally:
         if conn is not None:
             conn.close()
-        return df
+            return df
 
 print(select(["country_id", "name", "income_group"], ["country"]))
