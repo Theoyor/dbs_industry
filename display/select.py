@@ -1,4 +1,7 @@
+from pandas.core.frame import DataFrame
 import psycopg2
+import pandas
+import decimal
 
 def select(attributes, table, where = ""):
     conn = None
@@ -18,11 +21,18 @@ def select(attributes, table, where = ""):
         call = "SELECT "
         for a in attributes:
             call += a
-            call += " "
+            call += ", "
+        
+        call = call.rstrip(", ")
+        call+= " "
+
         call += "FROM "
         for t in table:
             call += t
-            call += " "
+            call += ", "
+
+        call = call.rstrip(", ")
+        call+= " "
         
         if where != "":
             call += "WHERE "
@@ -30,13 +40,26 @@ def select(attributes, table, where = ""):
 
         call +=";"
 
-
         cur.execute(call)        
 
         table = cur.fetchall()
-        
 
-        print(table) 
+        
+        d ={}
+        for a in attributes:
+            d[a] =[]
+        
+        for row in table:
+            for i in range(len(attributes)):
+                if isinstance(row[i], decimal.Decimal):
+                    d[attributes[i]].append(float(row[i]))
+                else:
+                    d[attributes[i]].append(row[i])
+
+
+
+        df = DataFrame(data=d)
+        #print(table) 
 	    # close the communication with the PostgreSQL
         cur.close()
 
@@ -48,5 +71,6 @@ def select(attributes, table, where = ""):
     finally:
         if conn is not None:
             conn.close()
+        return df
 
-
+print(select(["country_id", "name", "income_group"], ["country"]))
