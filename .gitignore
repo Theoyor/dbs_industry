@@ -1,1 +1,2 @@
-./fill_server/database.ini
+./fill_server/database.init
+./.vscode

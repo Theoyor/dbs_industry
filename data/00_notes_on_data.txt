@@ -1,8 +1,0 @@
-co2_emissions
-    Entity: Land oder Kontinent oder Region, 
-    Code, Ländercode, nicht vorhanden bei Kontinenten
-    Year, 
-    Annual CO₂ emissions(tons) float nicht konsequent
-    Spezifisch: keine Anführungszeichen, leere Werte durch ,, erkennbar
-
-
