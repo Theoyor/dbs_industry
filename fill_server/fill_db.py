@@ -12,6 +12,15 @@ def if_exists(d,key1,key2, frac = False):
 
     return None
 
+def pp_if_exists(d, p, key1, key2):
+    if key1 in d and key1 in p:
+        if key2 in d[key1] and key2 in p[key1]:
+            if not math.isnan(d[key1][key2]) and not math.isnan(p[key1][key2]):
+                return d[key1][key2]/p[key1][key2]
+
+    return None
+
+
 
 
 def create_tables():
@@ -51,6 +60,8 @@ def create_tables():
             gdp NUMERIC,
             population INTEGER,
             emission NUMERIC,
+            gdp_pp NUMERIC,
+            emission_pp NUMERIC,    
             PRIMARY KEY (country_id, year_id),
             FOREIGN KEY (country_id)
                     REFERENCES country (country_id)
@@ -83,7 +94,7 @@ def insert(cur):
             """,
             (
                 key, countries[key], if_exists(country_data, key, "inc"),if_exists(country_data, key, "reg"),
-                if_exists(sectors, key, "agr", True), if_exists(sectors, key, "ind", True), if_exists(sectors, key, "ser", True) 
+                if_exists(sectors, key, "agr"), if_exists(sectors, key, "ind"), if_exists(sectors, key, "ser") 
             )
         )
     
@@ -95,17 +106,18 @@ def insert(cur):
             """,
             (year, year == 2017)
         )
-    
+
     for key in country_keys:
         for year in years:
             cur.execute(
                 """
-                INSERT INTO country_in_year (country_id, year_id, industry_share, gdp, population, emission)
-                VALUES(%s,%s,%s,%s,%s,%s);
+                INSERT INTO country_in_year (country_id, year_id, industry_share, gdp, population, emission, gdp_pp, emission_pp)
+                VALUES(%s,%s,%s,%s,%s,%s,%s,%s);
                 """,
                 (
-                    key, year, if_exists(industry, key, year, True), if_exists(gdp, key, year, True),
-                    if_exists(population, key, year), if_exists(emissions, key, year, True)
+                    key, year, if_exists(industry, key, year), if_exists(gdp, key, year),
+                    if_exists(population, key, year), if_exists(emissions, key, year), 
+                    pp_if_exists(gdp, population, key, year),pp_if_exists(emissions, population, key, year) 
                 )
             )
 
