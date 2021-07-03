@@ -3,7 +3,7 @@ import os
 from configparser import ConfigParser
 
 
-def config(filename='.\\fill_server\\database.init', section='postgresql'):
+def config(filename='./fill_server/database.init', section='postgresql'):
     # create a parser
     parser = ConfigParser()
     # read config file
