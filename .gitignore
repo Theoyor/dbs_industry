@@ -1,2 +1,3 @@
-./fill_server/database.init
+./database.init
 ./.vscode
+./display/co2.py
