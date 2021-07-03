@@ -28,7 +28,7 @@ def prepare_daily_report():
     df_country_code.loc[df_country_code.Country_Region == 'Congo (Kinshasa)', 'CODE'] = 'COD'
     df_country_code.loc[df_country_code.Country_Region == 'Congo (Brazzaville)', 'CODE'] = 'COG'
     
-    df = sel.select()
+    df = sel.select(["country_id", ""], )
 
     return(df_country_code)
 

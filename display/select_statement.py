@@ -73,3 +73,6 @@ def select(attributes, table, where = ""):
             conn.close()
             return df
 
+
+
+# print(select(["country.country_id", "name","year_id", "emission" ], ["country", "country_in_year" ],"year_id = 2017 AND country.country_id = country_in_year.country_id" ))
