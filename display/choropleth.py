@@ -5,11 +5,15 @@ import pandas as pd
 import plotly.graph_objs as go
 import numpy as np
 from datetime import datetime, timedelta
-import psycopg2
+import select_statement as sel
 
 
 def prepare_daily_report():
-    
+
+
+
+
+
     current_date = (datetime.today() - timedelta(days=1)).strftime('%m-%d-%Y')
 
     df = pd.read_csv('./data/test.csv')
@@ -24,6 +28,8 @@ def prepare_daily_report():
     df_country_code.loc[df_country_code.Country_Region == 'Congo (Kinshasa)', 'CODE'] = 'COD'
     df_country_code.loc[df_country_code.Country_Region == 'Congo (Brazzaville)', 'CODE'] = 'COG'
     
+    df = sel.select()
+
     return(df_country_code)
 
 
