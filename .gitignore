@@ -1,3 +1,4 @@
 ./database.init
 ./.vscode
 ./.gitignore
+./display/co2.py
