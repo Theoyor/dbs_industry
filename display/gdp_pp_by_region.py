@@ -34,11 +34,11 @@ conn = psycopg2.connect(**params)
 cur = conn.cursor()
 
 
-cur.execute("WITH S AS (SELECT * FROM country_in_year WHERE emission <> 'NaN')                                                                                                        SELECT region, sum(emission), year_id FROM S, country WHERE S.country_id=country.country_id and region IS NOT NULL GROUP BY S.year_id, region ORDER BY S.year_id ASC                    ;")
+cur.execute("WITH S AS (SELECT * FROM country_in_year WHERE gdp_pp <> 'NaN')                                                                                                  SELECT region, AVG(gdp_pp), year_id FROM S, country WHERE S.country_id=country.country_id and region IS NOT NULL GROUP BY S.year_id, region ORDER BY S.year_id ASC              ;")
 
 table = cur.fetchall()
 
-attributes = ["region", "sum", "year_id"]
+attributes = ["region", "avg", "year_id"]
 
 print("Data collected.")
 
@@ -66,7 +66,7 @@ conn.close()
 
 
 
-fig = px.line(df, x= "year_id", y="sum", color="region", title="Co2-Emissions (in tons) by Region" )
+fig = px.line(df, x= "year_id", y="avg", color="region", title="GDP per person and year (in US$) by region" )
 fig.update_layout(bargap=0.2)
 fig.show()
 
@@ -76,22 +76,3 @@ fig.update_layout(
     font_color=colors['text']
 )
 
-app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
-    html.H1(
-        children='Hello Dash',
-        style={
-            'textAlign': 'center',
-            'color': colors['text']
-        }
-    ),
-
-    html.Div(children='Dash: A web application framework for Python.', style={
-        'textAlign': 'center',
-        'color': colors['text']
-    }),
-
-    dcc.Graph(
-        id='example-graph-2',
-        figure=fig
-    )
-])
