@@ -24,9 +24,9 @@ def fetch_data(selector, year):
 
 def fetch_sector_data(country_id):
     where = "country_id = \'{}\'".format(country_id)
-    df = sel.select(["name", "percentage_agriculture", "percentage_industry", "percentage_service"], ["country"], where)
-    df.rename(columns={"name": "country", "percentage_agriculture": "agriculture", "percentage_industry": "industry", "percentage_service": "service" })
+    df = sel.select(["percentage_agriculture", "percentage_industry", "percentage_service"], ["country"], where)
     df.fillna(0)
+    print(df)
     return(df)
 
 
@@ -49,8 +49,8 @@ app.layout = html.Div(
         dcc.Dropdown(
             id="value-selected", value='gdp',
             options=[
-                {'label': "Total CO2 Emissions ", 'value': 'emission'},
-                {'label': "Total gdp ", 'value': 'gdp'},
+                {'label': "Total co2 Emissions ", 'value': 'emission'},
+                {'label': "Total GDP ", 'value': 'gdp'},
                 ],
             style={"display": "block", "margin-left": "auto","margin-bottom": "5%" , "margin-right": "auto","width": "70%"},
             className="six columns")
@@ -67,9 +67,9 @@ app.layout = html.Div(
 
     html.Div(
         [
-            html.Span(dcc.Graph(id="world-map")),
-            html.Span(dcc.Graph(id="pie-chart"))
-        ], className="charts"),
+            dcc.Graph(id="world-map"),
+            dcc.Graph(id="pie-chart"),
+        ], className="charts", ),
     
 
     ], 
@@ -85,12 +85,11 @@ def generate_chart(country):
         country = "GER"
     else:
         country = country['points'][0]['location']
-    print(country)
     df = fetch_sector_data(country)
-    print(df[["percentage_agriculture", "percentage_industry", "percentage_service"]])
-    fig = px.pie(df[["percentage_agriculture", "percentage_industry", "percentage_service"]], values=list(df.columns.values), names=list(df.head(1)), )
+    print(df)
+    values = list(df.iloc[0])
+    fig = px.pie(names= ["agriculture", "industry", "service"], values=values, width= 400) 
     return fig
-
 
 
 @app.callback(
@@ -108,6 +107,22 @@ def update_figure(selected, year):
 
     dff = fetch_data(selected, year)
     dff['hover_text'] = dff["name"] + ": " + dff[selected].apply(str)
+    
+    bar = {
+    "thickness": 10,"len": 0.3,"x": 0.9,"y": 0.7,
+    'title': {"text": 'tons pp', "side": "bottom"},
+    'tickvals': [ 20, 27],
+    'ticktext': ['10,000,000', '10,000,000,000,000']
+    }
+    
+    if selected == "gdp":
+        bar["title"] = {"text": 'gdp in $', "side": "bottom"}
+        bar["ticktext"] = ['10,000,000', '10,000,000,000,000']
+    elif selected == "emission":
+        bar["title"] = {"text": 'tons of co2', "side": "bottom"}
+        bar["tickvals"] = [20,32]
+        bar["ticktext"] = ['10,000,000', '10,000,000,000']
+
 
     trace = go.Choropleth(
         locations=dff['country.country_id'],
@@ -119,14 +134,9 @@ def update_figure(selected, year):
         reversescale=True,
         colorscale="hot",
         marker={'line': {'color': '#BBBBBB','width': 0.5}},
-        colorbar={
-            "thickness": 10,"len": 0.3,"x": 0.9,"y": 0.7,
-            'title': {"text": 'tons pp', "side": "bottom"},
-            'tickvals': [ 2, 10],
-            'ticktext': ['100', '100,000']
-            }
+        colorbar=bar
     )   
-    return {"data": [trace],"layout": go.Layout(height=800,geo={'showframe': False,'showcoastlines': False,'projection': {'type': "miller"}})}
+    return {"data": [trace],"layout": go.Layout(  height=600, geo={'showframe': True,'showcoastlines': False,'projection': {'type': "miller"}})}
 
 
 
