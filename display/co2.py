@@ -9,7 +9,7 @@ import pandas as pd
 import select_statement as ss
 
 
-df = ss.select(["year_id", "country_id", "emission", "population"], ["country_in_year"] )
-fig = px.line(df, x= "year_id", y="emission", color="country_id", title="total co2-emissions (in tons) by country")
+df = ss.select(["year_id", "country_id", "emission", "population"], ["country_in_year"], "year_id<=2017" )
+fig = px.line(df, x= "year_id", y="emission", color="country_id", title="total Co2-emissions (in tons) by country")
 fig.update_layout(bargap=0.2)
 fig.show()
