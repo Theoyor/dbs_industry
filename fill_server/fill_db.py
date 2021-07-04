@@ -9,7 +9,6 @@ def if_exists(d,key1,key2, frac = False):
     if key1 in d:
         if key2 in d[key1]:
             return d[key1][key2]
-
     return None
 
 def pp_if_exists(d, p, key1, key2):
@@ -17,7 +16,6 @@ def pp_if_exists(d, p, key1, key2):
         if key2 in d[key1] and key2 in p[key1]:
             if not math.isnan(d[key1][key2]) and not math.isnan(p[key1][key2]):
                 return d[key1][key2]/p[key1][key2]
-
     return None
 
 
